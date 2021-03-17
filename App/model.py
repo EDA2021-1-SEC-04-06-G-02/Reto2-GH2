@@ -38,10 +38,57 @@ los mismos.
 """
 
 # Construccion de modelos
+def newCatalog()->dict:
+    catalog= {
+        'videos': None,
+        'tags'  : None,
+        'ids'   : None, }
+    
+    catalog['videos']=lt.newList('LINKED_LIST')
+    catalog['ids']={}
+    catalog['categories']=mp.newMap(maptype='PROBING', loadfactor=0.5)
+
+    return catalog
 
 # Funciones para agregar informacion al catalogo
+def addVideo(catalog, video):
+    cv=catalog['videos']
+    vid=esacosa(video)
+    lt.addLast(cv, vid)
+    insert(catalog['categories'], vid['category_id'], vid['title'])
+
+def addId(catalog, row)->None:
+    row=row[0].split('\t')
+    i=row[0]
+    n=row[1]
+    n=n.lower().strip()
+    ci=catalog['ids']
+    
+    ci[i]=n
 
 # Funciones para creacion de datos
+def esacosa(video):
+     data=('title','channel_title','country','publish_time','trending_date','category_id','views','likes','dislikes', 'tags')
+     sub={}
+
+     for i in data:
+         value=video[i]
+         sub[i]=value
+
+     return sub
+
+def insert(cc, i, n):
+    if mp.contains(cc, i)==False:
+        a=lt.newList()
+        lt.addLast(a,n)
+        mp.put(cc,i, a)
+    
+    else: 
+        a=mp.get(cc,i)
+        a=a['value']
+        lt.addLast(a,n)
+        mp.put(cc,i,a)
+
 
 # Funciones de consulta
 
