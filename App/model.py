@@ -38,7 +38,7 @@ los mismos.
 """
 
 # Construccion de modelos
-def newCatalog()->dict:
+def newCatalog(kind, lf)->dict:
     catalog= {
         'videos': None,
         'tags'  : None,
@@ -46,7 +46,7 @@ def newCatalog()->dict:
     
     catalog['videos']=lt.newList('LINKED_LIST')
     catalog['ids']={}
-    catalog['categories']=mp.newMap(maptype='PROBING', loadfactor=0.5)
+    catalog['categories']=mp.newMap(maptype=kind, loadfactor=lf)
 
     return catalog
 
@@ -55,7 +55,7 @@ def addVideo(catalog, video):
     cv=catalog['videos']
     vid=esacosa(video)
     lt.addLast(cv, vid)
-    insert(catalog['categories'], vid['category_id'], vid['title'])
+    insert(catalog['categories'], vid['category_id'], vid)
 
 def addId(catalog, row)->None:
     row=row[0].split('\t')
@@ -79,14 +79,14 @@ def esacosa(video):
 
 def insert(cc, i, n):
     if mp.contains(cc, i)==False:
-        a=lt.newList()
-        lt.addLast(a,n)
+        a=lt.newList('ARRAY_LIST')
+        lt.addFirst(a,n)
         mp.put(cc,i, a)
     
     else: 
         a=mp.get(cc,i)
         a=a['value']
-        lt.addLast(a,n)
+        lt.addFirst(a,n)
         mp.put(cc,i,a)
 
 
