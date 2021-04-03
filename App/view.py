@@ -43,6 +43,29 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- ")
+    print("3- ")
+    print("4- (R3) Video más viral por categoría")
+    print("5- (R4) Conocer los N videos con más likes por tag")
+
+
+# Para imprimir la info
+def p_rq3(ans):
+    print('Titulo: {0} || Canal: {1} || Número de categoría: {2} || Cantidad de días en tendencia: {3} '
+             .format(ans['title'], ans['channel_title'], ans['category_id'], ans['trending_days']))
+
+def p_rq4(ans,n):
+    k=min(n, lt.size(ans))
+    y=1
+    
+    while y<=k:
+        e=lt.getElement(ans, y)
+
+        print('Puesto: {0} || Titulo: {1} || Canal: {2} || Tiempo de publicación: {3} || Vistas: {4} || Likes: {5} || Dislikes: {6} || Tags: {7} '
+             .format(y, e['title'], e['channel_title'], e['publish_time'], e['views'], e['likes'], e['dislikes'], e['tags']))
+
+        y+=1
+
+
 
 catalog = None
 
@@ -61,11 +84,25 @@ while True:
         print('Primer video: ' + str(lt.firstElement(catalog['videos'])))
         print('Categorias: ' + str(catalog['ids']))
 
-        print('Algo\n')
-        print(catalog['categories'])
+    elif int(inputs[0]) == 2:
+        pass
 
     elif int(inputs[0]) == 2:
         pass
+
+    elif int(inputs[0]) == 4:
+        cat=str(input('Escriba la categoría que le interesa: '))
+        
+        ans=controller.reque3(catalog, cat)
+        p_rq3(ans)
+
+
+    elif int(inputs[0]) == 5:
+        tag=str(input('Escriba el tag: '))
+        n=int(input('Escriba cuantos videos quiere saber: '))
+
+        ans=controller.reque4(catalog, tag, n)
+        p_rq4(ans,n)
 
     else:
         sys.exit(0)

@@ -29,7 +29,7 @@ import csv
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
-# Inicialización del Catálogo de libros}
+# Inicialización del Catálogo de libros
 def initCatalog():
     catalog=model.newCatalog()
     return catalog
@@ -53,5 +53,16 @@ def loadIds(catalog):
         model.addId(catalog,row)
 
 # Funciones de ordenamiento
+def reque3(catalog, cat):
+    return model.reque3(catalog, cat)
+
+def reque4(catalog, tag, n):
+    t=correct_tag(tag)
+    return model.reque4(catalog, t, n)
 
 # Funciones de consulta sobre el catálogo
+def correct_tag(tag):
+    mt=tag.lower().strip()
+    c="\""
+    t=c+mt+c
+    return t
