@@ -127,15 +127,16 @@ def reque3(catalog, cat):
     ans=lt.firstElement(dans)
     return ans
 
-def reque4(catalog, tag, n):
+def reque4(catalog, tag, n, p):
     main=catalog['tags']
     t=tag.lower().strip()
     mini=mp.get(main, t)
 
     main=me.getValue(mini)
-    mini=ms.sort(main, cmpVideosByLikes)
-    k=min(n, lt.size(mini))
-    ans=lt.subList(mini, 1 , k)
+    mini=Cut_C(main , p)
+    main=ms.sort(mini, cmpVideosByLikes)
+    k=min(n, lt.size(main))
+    ans=lt.subList(main, 1 , k)
 
     return ans
 
@@ -196,3 +197,17 @@ def get_tp(main, t):
 
         y+=1
     return k
+
+def Cut_C(main, p):
+    y=1
+    ans=lt.newList('ARRAY_LIST')
+
+    while y<=lt.size(main):
+        e=lt.getElement(main, y)
+        c=e['country']
+
+        if c.strip().lower() == p.strip().lower():
+            lt.addFirst(ans, e)
+
+        y+=1
+    return ans

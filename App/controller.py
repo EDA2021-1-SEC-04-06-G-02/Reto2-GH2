@@ -56,9 +56,9 @@ def loadIds(catalog):
 def reque3(catalog, cat):
     return model.reque3(catalog, cat)
 
-def reque4(catalog, tag, n):
+def reque4(catalog, tag, n, p):
     t=correct_tag(tag)
-    return model.reque4(catalog, t, n)
+    return model.reque4(catalog, t, n, p)
 
 # Funciones de consulta sobre el catálogo
 def correct_tag(tag):

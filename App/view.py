@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-
+from DISClib.ADT import map as mp
 import config as cf
 import sys
 import controller
@@ -49,6 +49,9 @@ def printMenu():
 
 
 # Para imprimir la info
+def p_fv(e):
+    print()
+
 def p_rq3(ans):
     print('Titulo: {0} || Canal: {1} || Número de categoría: {2} || Cantidad de días en tendencia: {3} '
              .format(ans['title'], ans['channel_title'], ans['category_id'], ans['trending_days']))
@@ -81,8 +84,7 @@ while True:
         loadData(catalog)
 
         print('Registros de videos cargados: ' + str(lt.size(catalog['videos'])))
-        print('Primer video: ' + str(lt.firstElement(catalog['videos'])))
-        print('Categorias: ' + str(catalog['ids']))
+        print('Registros de categorías cargados: ' + str(mp.size(catalog['categories'])))
 
     elif int(inputs[0]) == 2:
         pass
@@ -99,9 +101,10 @@ while True:
 
     elif int(inputs[0]) == 5:
         tag=str(input('Escriba el tag: '))
+        p=str(input('Escriba el país: '))
         n=int(input('Escriba cuantos videos quiere saber: '))
 
-        ans=controller.reque4(catalog, tag, n)
+        ans=controller.reque4(catalog, tag, n, p)
         p_rq4(ans,n)
 
     else:
