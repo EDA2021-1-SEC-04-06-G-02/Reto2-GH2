@@ -53,6 +53,12 @@ def loadIds(catalog):
         model.addId(catalog,row)
 
 # Funciones de ordenamiento
+def reque1(catalog,cat,p,n):
+    return model.reque1(catalog, cat, p, n)
+
+def reque2(catalog, p):
+    return model.reque2(catalog, p)
+
 def reque3(catalog, cat):
     return model.reque3(catalog, cat)
 

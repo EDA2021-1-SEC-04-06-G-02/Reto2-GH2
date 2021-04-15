@@ -42,22 +42,23 @@ def newCatalog()->dict:
     catalog= {
         'videos': None,
         'tags'  : None,
-        'categories':None, 
+        'categories':None,
+        'countries': None, 
         'ids'   : None, }
     
-    catalog['videos']=lt.newList('SINGLE_LINKED')
+    catalog['videos']=0
     catalog['ids']=mp.newMap(maptype='PROBING', loadfactor=0.5)
     catalog['categories']=mp.newMap(maptype='CHAINING', loadfactor=4.0)
-
+    catalog['countries']=mp.newMap(maptype='CHAINING', loadfactor=4.0)
     catalog['tags']=mp.newMap(maptype='CHAINING', loadfactor=4.0)
 
     return catalog
 
 # Funciones para agregar informacion al catalogo
 def addVideo(catalog, video):
-    cv=catalog['videos']
+    catalog['videos']+=1
     vid=esacosa(video)
-    lt.addFirst(cv, vid)
+    insertCot(catalog['countries'], vid['country'], vid)
     insertCat(catalog['categories'], vid['category_id'], vid)
     insertTag(catalog['tags'], vid['tags'], vid)
 
@@ -82,6 +83,19 @@ def esacosa(video):
          sub[i]=value
 
      return sub
+
+def insertCot(cco, p, e):
+    p=p.lower().strip()
+    if mp.contains(cco, p)==False:
+        a=lt.newList('ARRAY_LIST')
+        lt.addFirst(a,e)
+        mp.put(cco,p, a)
+    
+    else: 
+        a=mp.get(cco,p)
+        a=me.getValue(a)
+        lt.addFirst(a,e)
+        mp.put(cco,p,a)
 
 def insertCat(cc, i, e):
     if mp.contains(cc, i)==False:
@@ -114,6 +128,32 @@ def insertTag(ct, t, e):
 
 
 # Funciones de consulta
+def reque1(catalog, cat, p, n):
+    main=catalog['categories']
+    cat=cat.lower().strip()
+    id=Nit(catalog, cat)
+
+    mini=mp.get(main, id)
+    dans=me.getValue(mini)
+    ans=Cut_C(dans, p)
+    ans=ms.sort(ans, cmpVideosByViews)
+
+    k=min(n, lt.size(ans))
+    ans=lt.subList(ans, 1, k)
+    return ans
+
+def reque2(catalog, p):
+    main=catalog['countries']
+    p=p.lower().strip()
+    
+    mini=mp.get(main , p)
+    dans=me.getValue(mini)
+    dans=Ct_alg(dans)
+    ans=ms.sort(dans, cmpVideosByTrend)
+
+    ans=lt.firstElement(ans)
+    return ans
+
 def reque3(catalog, cat):
     main=catalog['categories']
     cat=cat.lower().strip()
@@ -169,7 +209,7 @@ def Ct_alg(main):
     while y<=lt.size(main):
         e=lt.getElement(main, y)
         t=e['title']
-        se=dict(title=e['title'], channel_title=e['channel_title'], category_id=e['category_id'], trending_days=1)
+        se=dict(title=e['title'], channel_title=e['channel_title'], category_id=e['category_id'], country=e['country'], trending_days=1)
 
         if lt.isPresent(titles, t)==0:
             lt.addFirst(titles, t)

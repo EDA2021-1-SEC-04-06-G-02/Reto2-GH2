@@ -19,11 +19,11 @@
  * You should have received a copy of the GNU General Public License
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
-from DISClib.ADT import map as mp
 import config as cf
 import sys
 import controller
 from DISClib.ADT import list as lt
+from DISClib.ADT import map as mp
 assert cf
 
 
@@ -42,8 +42,8 @@ def loadData(catalog):
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
-    print("3- ")
+    print("2- (R1) Conocer los N videos con más views por categoría y país ")
+    print("3- (R2) Video más viral por país")
     print("4- (R3) Video más viral por categoría")
     print("5- (R4) Conocer los N videos con más likes por tag")
 
@@ -52,12 +52,28 @@ def printMenu():
 def p_fv(e):
     print()
 
+def p_rq1(ans):
+    k=lt.size(ans)
+    y=1
+
+    while y<=k:
+        e=lt.getElement(ans, y)
+
+        print('Titulo: {0} || Canal: {1} || Fecha {2} || Tiempo de publicación {3} || Vistas {4} || Likes {5} || Dislikes {6} '
+             .format(e['title'], e['channel_title'], e['trending_date'], e['publish_time'], e['views'], e['likes'], e['dislikes']))
+
+        y+=1
+
+def p_rq2(ans):
+    print('Titulo: {0} || Canal: {1} || País{2} || Cantidad de días en tendencia {3}'
+             .format(ans['title'], ans['channel_title'], ans['country'], ans['trending_days']))
+
 def p_rq3(ans):
     print('Titulo: {0} || Canal: {1} || Número de categoría: {2} || Cantidad de días en tendencia: {3} '
              .format(ans['title'], ans['channel_title'], ans['category_id'], ans['trending_days']))
 
-def p_rq4(ans,n):
-    k=min(n, lt.size(ans))
+def p_rq4(ans):
+    k=lt.size(ans)
     y=1
     
     while y<=k:
@@ -83,14 +99,22 @@ while True:
         catalog=initCatalog()
         loadData(catalog)
 
-        print('Registros de videos cargados: ' + str(lt.size(catalog['videos'])))
+        print('Registros de videos cargados: ' + str(catalog['videos']))
         print('Registros de categorías cargados: ' + str(mp.size(catalog['categories'])))
 
     elif int(inputs[0]) == 2:
-        pass
+        cat=str(input('Escriba la categoría que le interesa: '))
+        p=str(input('Escriba el país: '))
+        n=int(input('Escriba cuantos videos quiere saber: '))
 
-    elif int(inputs[0]) == 2:
-        pass
+        ans=controller.reque1(catalog, cat, p, n)
+        p_rq1(ans)
+
+    elif int(inputs[0]) == 3:
+        p=str(input('Escriba el país: '))
+
+        ans=controller.reque2(catalog, p)
+        p_rq2(ans)
 
     elif int(inputs[0]) == 4:
         cat=str(input('Escriba la categoría que le interesa: '))
@@ -105,7 +129,7 @@ while True:
         n=int(input('Escriba cuantos videos quiere saber: '))
 
         ans=controller.reque4(catalog, tag, n, p)
-        p_rq4(ans,n)
+        p_rq4(ans)
 
     else:
         sys.exit(0)
