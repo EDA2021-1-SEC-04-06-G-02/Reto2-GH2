@@ -42,8 +42,8 @@ def loadData(catalog):
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
-    print("3- ")
+    print("2- (R1) Conocer los N videos con más views en un país por categoría: ")
+    print("3- (R2) Video más viral en un país")
     print("4- (R3) Video más viral por categoría")
     print("5- (R4) Conocer los N videos con más likes por tag")
 
@@ -51,6 +51,22 @@ def printMenu():
 # Para imprimir la info
 def p_fv(e):
     print()
+
+def p_rq1(ans,n):
+    le=min(n, lt.size(ans))
+    c=1
+
+    while c<=le:
+        e=lt.getElement(ans,c)
+
+        print('Puesto: {0} || Trending_date: {1} || Titulo: {2} || Canal: {3} || Tiempo de pulicación: {4} || Vistas: {5} || Likes: {6} || Dislikes: {7}'
+             .format(c, le['trending_date'], le['title'], le['channel_title'], le['publish_time'], le['views'], le['likes'], le['dislikes']))
+
+        c+=1
+
+def p_rq2(ans):
+    print('Titulo: {0} || Canal: {1} || País: {2} || Cantidad de días en tendecia: {3} '
+             .format(ans['title'], ans['chaneel_title'], ans['country'], ans['trending_days']))
 
 def p_rq3(ans):
     print('Titulo: {0} || Canal: {1} || Número de categoría: {2} || Cantidad de días en tendencia: {3} '
@@ -87,10 +103,19 @@ while True:
         print('Registros de categorías cargados: ' + str(mp.size(catalog['categories'])))
 
     elif int(inputs[0]) == 2:
-        pass
+        categories=str(input('Escriba la categoría que le interesa: '))
+        n=str(input('Escriba cuantos videos quiere conocer: '))
+        p=str(input('Escriba el país del que desea conocer: '))
 
-    elif int(inputs[0]) == 2:
-        pass
+        ans=controller.reque1(catalog, categories, n, p)
+        p_rq1(ans)
+        
+
+    elif int(inputs[0]) == 3:
+        countri=str(input('Escriba el pais que le interesa:'))
+        
+        ans=controller.reque2(catalog, countri)
+        p_rq2(ans)
 
     elif int(inputs[0]) == 4:
         cat=str(input('Escriba la categoría que le interesa: '))

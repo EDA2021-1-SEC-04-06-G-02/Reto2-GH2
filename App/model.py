@@ -114,6 +114,34 @@ def insertTag(ct, t, e):
 
 
 # Funciones de consulta
+
+def reque1(catalog, cat, n, p):
+    main=catalog['categories']
+    cat=cat.lower().strip()
+    id=Nit(catalog, cat)
+    mini=mp.get(main,cat)
+
+    main=me.getvalue(mini)
+    mini=Cut_C(main, p)
+    main=ms.sort(mini, cmpVideosByViews)
+    le=min(n, lt.size(main))
+    ans=lt.sublist(main, 1, le)
+    return ans
+
+def reque2(catalog, countri):
+    main=catalog['country']
+    countri=countri.lower().strip()
+
+    mini=mp.get(main, id)
+    main=me.getValue(mini)
+    ans=Ct_alg(main)
+    dans=ms.sort(ans, cmpVideosByTrend)
+
+    ans=lt.firstElement(dans)
+    return ans
+
+
+
 def reque3(catalog, cat):
     main=catalog['categories']
     cat=cat.lower().strip()
